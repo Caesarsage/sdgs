@@ -1,5 +1,5 @@
-const staticCacheName = 'site-static-v3';
-const dynamicCacheName = 'site-dynamic-v2';
+const staticCacheName = 'site-static-v05';
+const dynamicCacheName = 'site-dynamic-v05';
 
 const assets = [
   '/',
@@ -13,6 +13,10 @@ const assets = [
   '/node_modules/aos/dist/aos.css',
   '/src/assets/17goals.jpeg',
   '/src/assets/activate.png',
+  '/src/assets/icons/facebook.svg',
+  '/src/assets/icons/instagram.svg',
+  '/src/assets/icons/linkedin.svg',
+  '/src/assets/icons/twitter.svg',
   '/src/assets/goal.jpeg',
   '/src/assets/unibenLogo.png',
   '/src/assets/images.jpeg',
@@ -33,8 +37,17 @@ const assets = [
   '/src/assets/Goals/goal15.png',
   '/src/assets/Goals/goal16.png',
   '/src/assets/Goals/goal17.png',
-  '/src/pages/404.html'
+  '/src/pages/fallback.html'
 ];
+
+// limit Cache size
+const limitCacheSize = async (name, size) =>{
+  const cache = await caches.open(name);
+  const keys = await cache.keys();
+  if (keys.length > size) {
+    cache.delete(keys[0]).then(limitCacheSize(name, size))
+  }
+}
 
 // install service worker
 self.addEventListener('install', (e)=>{
@@ -60,21 +73,27 @@ self.addEventListener('activate', e =>{
   )
 })
 
+
+
 // fetch event
 self.addEventListener('fetch', e=>{
   // console.log(`fetch event ${e}`);
-  e.respondWith(
-    caches.match(e.request).then(cacheRes =>{
-      return cacheRes || fetch(e.request).then(fetchRes => {
-        return caches.open(dynamicCacheName).then(cache =>{
-          cache.put(e.request.url, fetchRes.clone());
-          return fetchRes;
+  if (e.request.url.indexOf('firestore.googleapis.com') === -1){
+    e.respondWith(
+      caches.match(e.request).then(cacheRes =>{
+        return cacheRes || fetch(e.request).then(fetchRes => {
+          return caches.open(dynamicCacheName).then(cache =>{
+            cache.put(e.request.url, fetchRes.clone());
+            limitCacheSize(dynamicCacheName, 30)
+            return fetchRes;
+          })
         })
+      }).catch(() => {
+        if (e.request.url.indexOf('.html') > -1 ){
+          return caches.match('/src/pages/fallback.html')
+        }
       })
-    }).catch(() => {
-      if (e.request.url.indexOf('.html') > -1 ){
-        return caches.match('/src/pages/404.html')
-      }
-    })
-  );
+    );
+  }
+ 
 });
