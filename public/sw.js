@@ -1,5 +1,5 @@
-// const staticCacheName = 'site-static-v06';
-// const dynamicCacheName = 'site-dynamic-v06';
+// const staticCacheName = 'site-static-v08';
+// const dynamicCacheName = 'site-dynamic-v08';
 
 // const assets = [
 //   '/',
@@ -37,7 +37,8 @@
 //   '/src/assets/Goals/goal15.png',
 //   '/src/assets/Goals/goal16.png',
 //   '/src/assets/Goals/goal17.png',
-//   '/src/pages/fallback.html'
+//   '/src/pages/fallback.html',
+//    'https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,400;1,100;1,200;1,400&display=swap'
 // ];
 
 // // limit Cache size

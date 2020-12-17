@@ -1,9 +1,9 @@
 {
   "name": "SDGs App",
-  "short_name": "SDGsApp",
+  "short_name": "SDGs",
   "start_url": "/index.html",
   "theme_color": "#3498db",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "background_color": "#3498db",
   "display": "standalone",
   "icons": [
@@ -26,6 +26,11 @@
         "src": "src/assets/assets/icons/favicon-16x16.png",
         "sizes": "16x16",
         "type": "image/png"
+    },
+    {
+      "src": "src/assets/assets/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
     }
   ]
 }
